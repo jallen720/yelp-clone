@@ -1,7 +1,7 @@
 const webpack    = require('webpack');
 const fs         = require('fs');
 const path       = require('path');
-const hjsWebpack = require('hjsWebpack');
+const hjsWebpack = require('hjs-webpack');
 
 const join    = path.join;
 const resolve = path.resolve;
