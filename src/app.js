@@ -6,7 +6,9 @@ import './app.css'
 
 const App = React.createClass({
     render: () => (
-        <div className={ styles.container }>Text text text more text</div>
+        <div className={ styles.container }>
+            <h1>Environment: { __NODE_ENV__ }</h1>
+        </div>
     ),
 });
 
