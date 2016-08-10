@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+NODE_PATH=$NODE_PATH:./ NODE_ENV=development ./node_modules/.bin/hjs-dev-server
