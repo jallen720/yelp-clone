@@ -5,11 +5,14 @@ const hjsWebpack   = require('hjs-webpack');
 const precss       = require('precss');
 const autoprefixer = require('autoprefixer');
 const cssnano      = require('cssnano');
+const dotenv       = require('dotenv');
 
-const join    = path.join;
-const resolve = path.resolve;
+const join         = path.join;
+const resolve      = path.resolve;
+const DefinePlugin = webpack.DefinePlugin;
 
-const isDev           = process.env.NODE_ENV === 'development';
+const NODE_ENV        = process.env.NODE_ENV;
+const isDev           = NODE_ENV === 'development';
 const rootDir         = resolve(__dirname);
 const srcDir          = join(rootDir, 'src');
 const nodeModulesDir  = join(rootDir, 'node_modules');
@@ -73,6 +76,38 @@ config.module.loaders.push({
     include : [ nodeModulesDir ],
     loader  : 'style!css'
 });
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Configure environment.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+function getEnvironmentMemoMerger(environment) {
+    return (memo, key) => {
+        memo[`__${key.toUpperCase()}__`] = JSON.stringify(environment[key]);
+        return memo;
+    };
+}
+
+const dotenvEnvironment = dotenv.config();
+
+const localEnvironment = dotenv.config({
+    path   : join(rootDir, 'config', `${NODE_ENV}.config.js`),
+    silent : true,
+});
+
+// Merge localEnvironment with dotenvEnvironment.
+const environment = Object.assign({}, dotenvEnvironment, localEnvironment);
+
+const defines =
+    Object
+        .keys(environment)
+        .reduce(
+            getEnvironmentMemoMerger(environment),
+            { __NODE_ENV__: JSON.stringify(NODE_ENV) });
+
+config.plugins = [ new DefinePlugin(defines) ].concat(config.plugins);
 
 
 module.exports = config;
