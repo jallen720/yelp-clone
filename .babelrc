@@ -8,14 +8,14 @@
     "env": {
         "development": {
             "presets": [ "react-hmre" ]
+        },
+
+        "production": {
+            "presets": []
+        },
+
+        "test": {
+            "presets": []
         }
-    },
-
-    "production": {
-        "presets": []
-    },
-
-    "test": {
-        "presets": []
     }
 }
