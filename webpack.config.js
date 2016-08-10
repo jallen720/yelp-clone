@@ -29,6 +29,12 @@ config.postcss = [].concat([
     cssnano({}),
 ]);
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Configure CSS loaders.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
 function createIsLoaderFilter(regex) {
     return (loader) => {
         return loader &&
@@ -46,7 +52,6 @@ function findLoader(loaders, regex) {
 // Find initial loader in config.module.loaders.
 const cssLoader = findLoader(config.module.loaders, cssLoadersRegex);
 
-
 // Clone cssLoader and modify to support loading modules.
 const newloader = Object.assign({}, cssLoader, {
     test    : /\.module\.css$/,
@@ -61,7 +66,6 @@ config.module.loaders.push(newloader);
 
 cssLoader.test   = new RegExp(`[^module]${cssLoader.test.source}`);
 cssLoader.loader = newloader.loader;
-
 
 // Add another loader for loading non-module css (e.g. font-awesome).
 config.module.loaders.push({
